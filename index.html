@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>301 Redirect Generator</title>
+    <script type="text/javascript">
+        function sanitizeURL(url) {
+            var a = document.createElement('a');
+            a.href = url;
+            return a.pathname;
+        }
+        
+        function generateRedirect() {
+            var oldURL = document.getElementById("oldURL").value;
+            var newURL = document.getElementById("newURL").value;
+
+            oldURL = sanitizeURL(oldURL);
+            newURL = sanitizeURL(newURL);
+            
+            var htaccessCode = "Redirect 301 " + oldURL + " " + newURL;
+            document.getElementById("htaccessCode").innerText = htaccessCode;
+
+            var storedRedirects = localStorage.getItem('redirects') ? JSON.parse(localStorage.getItem('redirects')) : [];
+            storedRedirects.push(htaccessCode);
+            localStorage.setItem('redirects', JSON.stringify(storedRedirects));
+            displayRedirects();
+        }
+
+        function displayRedirects() {
+            var storedRedirects = localStorage.getItem('redirects') ? JSON.parse(localStorage.getItem('redirects')) : [];
+            var displayArea = document.getElementById('storedRedirects');
+            displayArea.innerHTML = '';
+            for(var i = 0; i < storedRedirects.length; i++) {
+                displayArea.innerHTML += '<p>' + storedRedirects[i] + '</p>';
+            }
+        }
+
+        function clearRedirects() {
+            localStorage.removeItem('redirects');
+            displayRedirects();
+        }
+
+        window.onload = displayRedirects;
+    </script>
+</head>
+<body>
+    <h1>301 Redirect Generator</h1>
+    <form>
+        <label for="oldURL">Old URL:</label><br>
+        <input type="text" id="oldURL" name="oldURL"><br>
+        <label for="newURL">New URL:</label><br>
+        <input type="text" id="newURL" name="newURL"><br>
+        <input type="button" value="Generate" onclick="generateRedirect()">
+        <input type="button" value="Clear Stored Redirects" onclick="clearRedirects()">
+    </form>
+    <h2>.htaccess Code:</h2>
+    <p id="htaccessCode"></p>
+    <h2>Stored Redirects:</h2>
+    <div id="storedRedirects"></div>
+</body>
+</html>
