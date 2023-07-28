@@ -12,6 +12,8 @@ The 301 Redirect Generator is a handy tool designed to simplify the process of c
 
 ## How to Use
 
+Deployed App [https://kandekore.github.io/301-redirect-generator/](https://kandekore.github.io/301-redirect-generator/)
+
 1. Enter your old URL into the "Old URL" input field.
 2. Enter your new URL into the "New URL" input field.
 3. Click the "Generate" button to generate the `.htaccess` 301 redirect code.
